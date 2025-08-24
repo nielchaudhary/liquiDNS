@@ -3,8 +3,8 @@ import { Logger } from "./logger";
 import { isNullOrUndefined } from "./utils";
 
 import * as dotenv from "dotenv";
+import { getErrorDetails } from "./error";
 
-//foL4nGJcl7lz5T2V
 dotenv.config();
 
 const logger = new Logger("database");
@@ -27,7 +27,10 @@ class DB {
       DB.users = DB.client.db(DB_NAME).collection(USERS_COLL);
       logger.info("liquidns DB Connection Initialised");
     } catch (error) {
-      logger.error("Failed to connect to MongoDB", error);
+      logger.error(
+        "Failed to connect to MongoDB due to : ",
+        getErrorDetails(error)
+      );
       throw error;
     }
   }
