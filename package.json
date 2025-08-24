@@ -1,9 +1,14 @@
 {
   "name": "liquidns",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "build/app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "pnpm run lint:check && pnpm run madge:check-build && tsc -b",
+    "lint:check": "eslint .",
+    "madge:check-build": "madge --circular --extensions ts src/",
+    "dev:prod": "pnpm run build && NODE_ENV=production cross-env DEBUG=liquidns* node -r dotenv/config build/app.js",
+    "dev": "pnpm run build && NODE_ENV=development cross-env DEBUG=liquidns* nodemon --watch 'src/**/*.ts' --exec 'ts-node' src/app.ts"
   },
   "keywords": [],
   "author": "",
@@ -11,10 +16,22 @@
   "description": "",
   "dependencies": {
     "@types/cors": "^2.8.19",
+    "@types/debug": "^4.1.12",
     "@types/dotenv": "^6.1.1",
     "@types/express": "^5.0.3",
     "cors": "^2.8.5",
+    "cross-env": "^10.0.0",
     "dotenv": "^17.2.1",
-    "express": "^5.1.0"
+    "express": "^5.1.0",
+    "nodemon": "^3.1.10"
+  },
+  "devDependencies": {
+    "@types/node": "^24.3.0",
+    "@typescript-eslint/eslint-plugin": "^8.24.0",
+    "@typescript-eslint/parser": "^8.24.0",
+    "debug": "^4.4.1",
+    "madge": "^8.0.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.2"
   }
 }
