@@ -17,15 +17,33 @@ const initServer = async () => {
 };
 
 try {
-  initServer().then(() => {
-    app.listen(PORT, () => {
-      logger.info("liquidns SERVER LIVE ON PORT 8090 🚀");
+  initServer()
+    .then(() => {
+      app.listen(PORT, () => {
+        logger.info("liquidns SERVER LIVE ON PORT 8090 🚀");
+      });
+    })
+    .catch((error) => {
+      logger.error(
+        "Failed to initialise liquidns processes",
+        getErrorDetails(error)
+      );
+      process.exit(1);
     });
-  });
 } catch (error) {
   logger.error(
-    "Failed to initialise liquidns processes",
+    "Unexpected synchronous error while starting server",
     getErrorDetails(error)
   );
   process.exit(1);
 }
+
+process.on("SIGINT", () => {
+  logger.error("SIGINT received. Shutting down gracefully...");
+  process.exit(0);
+});
+
+process.on("SIGTERM", () => {
+  logger.error("SIGTERM received. Shutting down gracefully...");
+  process.exit(0);
+});
