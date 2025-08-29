@@ -5,6 +5,7 @@ import { Logger } from "./config/logger";
 import { initDB } from "./config/database";
 import cors from "cors";
 import { getErrorDetails } from "./config/error";
+import { domainRouter } from "./domain/router";
 dotenv.config();
 
 const logger = new Logger("app");
@@ -14,6 +15,7 @@ const initServer = async () => {
   await initDB();
   app.use(express.json());
   app.use(cors());
+  app.use(domainRouter[0], domainRouter[1]);
 };
 
 try {
