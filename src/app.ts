@@ -11,7 +11,17 @@ dotenv.config();
 const logger = new Logger("app");
 const PORT = process.env.PORT ?? 8090;
 
-const initServer = async () => {
+/**
+ * Initializes the server:
+ * - Connects to the database
+ * - Applies global middlewares (JSON, CORS)
+ * - Registers domain router
+ *
+ * @returns {Promise<void>} Resolves once initialization is complete
+ * @throws Will throw an error if database connection fails
+ */
+
+const initServer = async (): Promise<void> => {
   await initDB();
   app.use(express.json());
   app.use(cors());
