@@ -59,3 +59,16 @@ process.on("SIGTERM", () => {
   logger.error("SIGTERM received. Shutting down gracefully...");
   process.exit(0);
 });
+
+process.on("uncaughtException", (error: Error) => {
+  logger.error("Uncaught exception:", getErrorDetails(error));
+  process.exit(1);
+});
+
+process.on(
+  "unhandledRejection",
+  (reason: unknown, promise: Promise<unknown>) => {
+    logger.error("Unhandled rejection at:", promise, "reason:", reason);
+    process.exit(1);
+  }
+);
